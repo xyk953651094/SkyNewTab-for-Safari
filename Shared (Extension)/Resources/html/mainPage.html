@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Sky 新标签页</title>
+    <script src="../layui/layui.js"></script>
+    <link rel="stylesheet" href="../layui/css/layui.css"/>
+    <link rel="stylesheet" href="../assets/iconFont/iconfont.css"/>
+
+    <script src="../blurHash/blurhash_pure_js_port.min.js"></script>
+    <script src="../js/publicFunctions.js"></script>
+    <script src="../js/publicConstants.js"></script>
+    <script src="../js/mainPage.js"></script>
+    <link rel="stylesheet" href="../css/mainPage.css"/>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin" id="layoutAdmin">
+    <div class="layui-header" id="layuiHeader">
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-xs12 layui-col-sm8 layui-col-md6 rowLeft">
+                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                            id="greetBtn">
+                    </button>
+                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                            id="weatherBtn">
+                    </button>
+                </div>
+                <div class="layui-col-xs0 layui-col-sm4 layui-col-md6 rowRight">
+                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                            id="downloadBtnHeader">
+                        <i class="iconfont icon-download iconStyle"></i>
+                    </button>
+                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                            id="gotoBtnHeader">
+                        <i class="iconfont icon-link iconStyle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-body center" id="layuiBody">
+        <div class="layui-container center">
+            <div class="mask" id="mask"></div>
+            <input type="text" name="title" placeholder="" autocomplete="off"
+                   class="layui-input" id="searchInput">
+        </div>
+    </div>
+    <div class="layui-footer" id="layuiFooter">
+        <div class="layui-container">
+            <div class="layui-row rowRight">
+                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                        id="authorBtn">
+                    <i class="iconfont icon-user"></i>
+                </button>
+                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                        id="createTimeBtn">
+                    <i class="iconfont icon-camera"></i>
+                </button>
+                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                        id="downloadBtnFooter">
+                    <i class="iconfont icon-download iconStyle"></i>
+                </button>
+                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                        id="gotoBtnFooter">
+                    <i class="iconfont icon-link iconStyle"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
