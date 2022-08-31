@@ -4,7 +4,7 @@
 * 本作品由作者个人出于学习目的开发，由于成本原因，难以保证不同型号设备下的最终品质，后续尽量完善。
 
 ## 简介
-适用于Chromium的新标签页插件。  
+适用于 Safari 的新标签页插件。  
 基于 Html + Javascript + CSS + Layui。  
 语言：中文，English  
 * 节气来源：https://www.mxnzp.com 
