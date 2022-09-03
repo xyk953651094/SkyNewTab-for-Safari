@@ -153,6 +153,9 @@ layui.use(['layer'], function(){
 
         let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
         let orientation = 'landscape';
+        if(device === 'iPhone' || device === 'Android') {
+            orientation = 'portrait';  // 竖屏请求竖屏图片
+        }
         $.ajax({
             url: 'https://api.unsplash.com/photos/random?',
             headers: {
@@ -196,7 +199,7 @@ layui.use(['layer'], function(){
             'color': getFontColor(getThemeColor(imageData.color)),
             'background-color': getThemeColor(imageData.color)
         });
-        $('body').css('background-color', getThemeColor(imageData.color));
+        $('body').css('background-color', imageData.color);
 
         // 显示按钮
         if(device === 'iPhone' || device === 'Android') {  // 小屏显示底部按钮
