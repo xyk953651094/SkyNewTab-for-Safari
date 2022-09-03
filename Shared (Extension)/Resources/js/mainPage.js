@@ -16,12 +16,13 @@ layui.use(['layer'], function(){
     let gotoBtns = $('#gotoBtnHeader, #gotoBtnFooter');              // 跳转按钮集合
 
     let device = deviceModel();  // 获取当前设备类型
+    let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
 
     // 下载按钮点击事件
     downloadBtns.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.links.download);
+                window.open(unsplashImage.links.download + unsplashUrl);
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
@@ -34,7 +35,7 @@ layui.use(['layer'], function(){
     gotoBtns.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.links.html);
+                window.open(unsplashImage.links.html + unsplashUrl);
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
@@ -78,7 +79,7 @@ layui.use(['layer'], function(){
     authorBtn.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.user.links.html);
+                window.open(unsplashImage.user.links.html + unsplashUrl);
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
