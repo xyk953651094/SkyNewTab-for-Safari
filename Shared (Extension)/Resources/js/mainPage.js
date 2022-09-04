@@ -195,12 +195,12 @@ layui.use(['layer'], function(){
         // 图片加载完成前显示BlurHash效果
         // blurHash(imageData, layoutAdmin);
 
-        // 设置主题颜色
-        $('.frostedGlass').css({
-            'color': getFontColor(getThemeColor(imageData.color)),
-            'background-color': getThemeColor(imageData.color)
-        });
-        $('body').css('background-color', imageData.color);
+        // 动画过渡主题颜色
+        $('.frostedGlass').animate({
+            color: getFontColor(getThemeColor(imageData.color)),
+            backgroundColor: getThemeColor(imageData.color)
+        }, 1000);
+        $('body').animate({backgroundColor: imageData.color}, 1000);
 
         // 显示按钮
         if(device === 'iPhone' || device === 'Android') {  // 小屏显示底部按钮
