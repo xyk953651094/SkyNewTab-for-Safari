@@ -7,6 +7,7 @@ layui.use(['layer'], function(){
     let weatherBtn = $('#weatherBtn')                 // 天气按钮
     let downloadBtnHeader = $('#downloadBtnHeader');  // 顶部下载按钮，桌面端时显示
     let gotoBtnHeader = $('#gotoBtnHeader');          // 顶部跳转按钮，桌面端时显示
+    let mask = $('#mask');                            // 遮罩层
     let searchInput = $('#searchInput');              // 搜索框
     let authorBtn = $('#authorBtn');                  // 作者按钮，桌面端时显示
     let createTimeBtn = $('#createTimeBtn');          // 创作时间按钮，桌面端时显示
@@ -46,13 +47,14 @@ layui.use(['layer'], function(){
 
     // 搜索框事件
     searchInput.on('focus', function () {  // 搜索框获取焦点事件，开启遮罩层
-        $('#mask').css({
+        mask.removeClass('layui-anim layui-anim-fadeout');
+        mask.addClass('layui-anim layui-anim-fadein');
+        mask.css({
             'display': 'block',
         });
     }).on('blur', function () {  // 搜索框失去焦点事件，关闭遮罩层
-        $('#mask').css({
-            'display': 'none',
-        });
+        mask.removeClass('layui-anim layui-anim-fadein');
+        mask.addClass('layui-anim layui-anim-fadeout');
     }).on('keydown', function (e) {  // 搜索框搜索事件
         if (e.keyCode === 13) {
             let searchText = $('#searchInput').val();
@@ -107,7 +109,7 @@ layui.use(['layer'], function(){
                     if(result.data.solarTerms.indexOf('后') === -1) {
                         solarTerms = '今日' + solarTerms;
                     }
-                    greetBtn.html('<i class="iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;|&nbsp;' + solarTerms + '</i>')
+                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;|&nbsp;' + solarTerms + '</i>')
                 }
                 else{}
             },
@@ -123,7 +125,7 @@ layui.use(['layer'], function(){
             success: function (result) {
                 if (result.status === 'success' && result.data.weatherData !==null) {
                     let weatherData = result.data.weatherData;
-                    weatherBtn.html('<i class="iconfont"> ' + weatherData.weather + '&nbsp;|&nbsp;' + weatherData.temperature + '°C</i>');
+                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '&nbsp;|&nbsp;' + weatherData.temperature + '°C</i>');
                     weatherBtn.css('display', 'inline-block');  // 请求成功再显示
                 }
                 else {}
@@ -189,7 +191,6 @@ layui.use(['layer'], function(){
     function setBackgroundImage(imageData){
         let img = new Image();
         img.src = imageData.urls.regular;
-        img.className = 'backgroundImage';
 
         // 图片加载完成前显示BlurHash效果
         blurHash(imageData, layoutAdmin);
@@ -219,6 +220,7 @@ layui.use(['layer'], function(){
 
         // 图片加载完成时
         img.onload = () =>  {
+            img.className = 'backgroundImage layui-anim layui-anim-fadein'
             layoutAdmin.append(img);
             // 设置动态效果
             setTimeout(function(){
