@@ -220,13 +220,14 @@ layui.use(['layer'], function(){
 
         // 图片加载完成时
         img.onload = () =>  {
-            img.className = 'backgroundImage layui-anim layui-anim-fadein'
             layoutAdmin.append(img);
+            img.className = 'backgroundImage layui-anim layui-anim-fadein'
+
             // 设置动态效果
             setTimeout(function(){
-                img.style.transform = 'scale(1.05)';
+                img.style.transform = 'scale(1.03)';
                 img.style.transition = '5s';
-            }, 0);
+            }, 100 );  // 假如时间设为0（立即执行）会无法执行
             setTimeout(function(){
                 mouseMoveEffect(img);
             }, 5000);
