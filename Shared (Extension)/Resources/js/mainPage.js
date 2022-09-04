@@ -193,7 +193,7 @@ layui.use(['layer'], function(){
         img.src = imageData.urls.regular;
 
         // 图片加载完成前显示BlurHash效果
-        blurHash(imageData, layoutAdmin);
+        // blurHash(imageData, layoutAdmin);
 
         // 设置主题颜色
         $('.frostedGlass').css({
