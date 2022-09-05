@@ -199,8 +199,8 @@ layui.use(['layer'], function(){
         $('.frostedGlass').animate({
             color: getFontColor(getThemeColor(imageData.color)),
             backgroundColor: getThemeColor(imageData.color)
-        }, 1000);
-        $('body').animate({backgroundColor: imageData.color}, 1000);
+        }, 500);
+        $('body').animate({backgroundColor: imageData.color}, 500);
 
         // 显示按钮
         if(device === 'iPhone' || device === 'Android') {  // 小屏显示底部按钮
