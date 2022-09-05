@@ -143,7 +143,7 @@ function blurHash(imageData, container) {
                 width,
                 height
             );
-            canvas.className = 'backgroundCanvas';
+            canvas.className = 'backgroundCanvas layui-anim layui-anim-fadein';
             container.append(canvas);
 
             // as image object with onload callback

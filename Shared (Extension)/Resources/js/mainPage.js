@@ -7,6 +7,7 @@ layui.use(['layer'], function(){
     let weatherBtn = $('#weatherBtn')                 // 天气按钮
     let downloadBtnHeader = $('#downloadBtnHeader');  // 顶部下载按钮，桌面端时显示
     let gotoBtnHeader = $('#gotoBtnHeader');          // 顶部跳转按钮，桌面端时显示
+    let mask = $('#mask');                            // 遮罩层
     let searchInput = $('#searchInput');              // 搜索框
     let authorBtn = $('#authorBtn');                  // 作者按钮，桌面端时显示
     let createTimeBtn = $('#createTimeBtn');          // 创作时间按钮，桌面端时显示
@@ -16,12 +17,13 @@ layui.use(['layer'], function(){
     let gotoBtns = $('#gotoBtnHeader, #gotoBtnFooter');              // 跳转按钮集合
 
     let device = deviceModel();  // 获取当前设备类型
+    let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
 
     // 下载按钮点击事件
     downloadBtns.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.links.download);
+                window.open(unsplashImage.links.download + unsplashUrl);
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
@@ -34,7 +36,7 @@ layui.use(['layer'], function(){
     gotoBtns.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.links.html);
+                window.open(unsplashImage.links.html + unsplashUrl);
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
@@ -45,13 +47,14 @@ layui.use(['layer'], function(){
 
     // 搜索框事件
     searchInput.on('focus', function () {  // 搜索框获取焦点事件，开启遮罩层
-        $('#mask').css({
+        mask.removeClass('layui-anim layui-anim-fadeout');
+        mask.addClass('layui-anim layui-anim-fadein');
+        mask.css({
             'display': 'block',
         });
     }).on('blur', function () {  // 搜索框失去焦点事件，关闭遮罩层
-        $('#mask').css({
-            'display': 'none',
-        });
+        mask.removeClass('layui-anim layui-anim-fadein');
+        mask.addClass('layui-anim layui-anim-fadeout');
     }).on('keydown', function (e) {  // 搜索框搜索事件
         if (e.keyCode === 13) {
             let searchText = $('#searchInput').val();
@@ -78,7 +81,7 @@ layui.use(['layer'], function(){
     authorBtn.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.user.links.html);
+                window.open(unsplashImage.user.links.html + unsplashUrl);
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
@@ -106,7 +109,7 @@ layui.use(['layer'], function(){
                     if(result.data.solarTerms.indexOf('后') === -1) {
                         solarTerms = '今日' + solarTerms;
                     }
-                    greetBtn.html('<i class="iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;|&nbsp;' + solarTerms + '</i>')
+                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;|&nbsp;' + solarTerms + '</i>')
                 }
                 else{}
             },
@@ -122,7 +125,7 @@ layui.use(['layer'], function(){
             success: function (result) {
                 if (result.status === 'success' && result.data.weatherData !==null) {
                     let weatherData = result.data.weatherData;
-                    weatherBtn.html('<i class="iconfont"> ' + weatherData.weather + '&nbsp;|&nbsp;' + weatherData.temperature + '°C</i>');
+                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '&nbsp;|&nbsp;' + weatherData.temperature + '°C</i>');
                     weatherBtn.css('display', 'inline-block');  // 请求成功再显示
                 }
                 else {}
@@ -152,6 +155,9 @@ layui.use(['layer'], function(){
 
         let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
         let orientation = 'landscape';
+        if(device === 'iPhone' || device === 'Android') {
+            orientation = 'portrait';  // 竖屏请求竖屏图片
+        }
         $.ajax({
             url: 'https://api.unsplash.com/photos/random?',
             headers: {
@@ -185,17 +191,16 @@ layui.use(['layer'], function(){
     function setBackgroundImage(imageData){
         let img = new Image();
         img.src = imageData.urls.regular;
-        img.className = 'backgroundImage';
 
         // 图片加载完成前显示BlurHash效果
-        blurHash(imageData, layoutAdmin);
+        // blurHash(imageData, layoutAdmin);
 
-        // 设置主题颜色
-        $('.frostedGlass').css({
-            'color': getFontColor(getThemeColor(imageData.color)),
-            'background-color': getThemeColor(imageData.color)
-        });
-        $('body').css('background-color', getThemeColor(imageData.color));
+        // 动画过渡主题颜色
+        $('.frostedGlass').animate({
+            color: getFontColor(getThemeColor(imageData.color)),
+            backgroundColor: getThemeColor(imageData.color)
+        }, 500);
+        $('body').animate({backgroundColor: imageData.color}, 500);
 
         // 显示按钮
         if(device === 'iPhone' || device === 'Android') {  // 小屏显示底部按钮
@@ -216,11 +221,13 @@ layui.use(['layer'], function(){
         // 图片加载完成时
         img.onload = () =>  {
             layoutAdmin.append(img);
+            img.className = 'backgroundImage layui-anim layui-anim-fadein'
+
             // 设置动态效果
             setTimeout(function(){
-                img.style.transform = 'scale(1.05)';
+                img.style.transform = 'scale(1.03)';
                 img.style.transition = '5s';
-            }, 0);
+            }, 100 );  // 假如时间设为0（立即执行）会无法执行
             setTimeout(function(){
                 mouseMoveEffect(img);
             }, 5000);

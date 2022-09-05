@@ -65,8 +65,8 @@ html, body {
 #searchInput {
     min-width: 350px;
     max-width: 750px;
-    height: 44px;
-    line-height: 44px;
+    height: 38px;
+    line-height: 38px;
     border-radius: 100px;
     padding-left: 20px;
     border-width: 0;

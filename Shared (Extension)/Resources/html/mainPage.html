@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../layui/css/layui.css"/>
     <link rel="stylesheet" href="../assets/iconFont/iconfont.css"/>
 
+    <script src="../jQuery/jquery-3.6.1.min.js"></script>
+    <script src="../jQuery/jquery.color-2.2.0.min.js"></script>
+    <script src="../jQuery/jquery-ui.min.js"></script>
     <script src="../blurHash/blurhash_pure_js_port.min.js"></script>
     <script src="../js/publicFunctions.js"></script>
     <script src="../js/publicConstants.js"></script>
@@ -20,21 +23,21 @@
         <div class="layui-container">
             <div class="layui-row">
                 <div class="layui-col-xs12 layui-col-sm8 layui-col-md6 rowLeft">
-                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                    <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                             id="greetBtn">
                     </button>
-                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                    <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                             id="weatherBtn">
                     </button>
                 </div>
                 <div class="layui-col-xs0 layui-col-sm4 layui-col-md6 rowRight">
-                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                    <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                             id="downloadBtnHeader">
-                        <i class="iconfont icon-download iconStyle"></i>
+                        <i class="layui-anim layui-anim-fadein iconfont icon-download iconStyle"></i>
                     </button>
-                    <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                    <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                             id="gotoBtnHeader">
-                        <i class="iconfont icon-link iconStyle"></i>
+                        <i class="layui-anim layui-anim-fadein iconfont icon-link iconStyle"></i>
                     </button>
                 </div>
             </div>
@@ -44,27 +47,27 @@
         <div class="layui-container center">
             <div class="mask" id="mask"></div>
             <input type="text" name="title" placeholder="" autocomplete="off"
-                   class="layui-input" id="searchInput">
+                   class="layui-input layui-anim layui-anim-fadein" id="searchInput">
         </div>
     </div>
     <div class="layui-footer" id="layuiFooter">
         <div class="layui-container">
             <div class="layui-row rowRight">
-                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                         id="authorBtn">
-                    <i class="iconfont icon-user"></i>
+                    <i class="layui-anim layui-anim-fadein iconfont icon-user"></i>
                 </button>
-                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                         id="createTimeBtn">
-                    <i class="iconfont icon-camera"></i>
+                    <i class="layui-anim layui-anim-fadein iconfont icon-camera"></i>
                 </button>
-                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                         id="downloadBtnFooter">
-                    <i class="iconfont icon-download iconStyle"></i>
+                    <i class="layui-anim layui-anim-fadein iconfont icon-download iconStyle"></i>
                 </button>
-                <button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
+                <button class="layui-btn layui-btn-radius layui-btn-primary frostedGlass layui-anim layui-anim-fadein"
                         id="gotoBtnFooter">
-                    <i class="iconfont icon-link iconStyle"></i>
+                    <i class="layui-anim layui-anim-fadein iconfont icon-link iconStyle"></i>
                 </button>
             </div>
         </div>
