@@ -23,14 +23,13 @@ layui.use(['layer'], function(){
     downloadBtns.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.links.download + unsplashUrl);
+                window.open(unsplashImage.links.download_location + unsplashUrl);
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
             }
         });
     });
-    downloadBtns.attr('title', getMessage('downloadImage'));
 
     // 跳转按钮点击事件
     gotoBtns.on('click', function () {
@@ -43,7 +42,6 @@ layui.use(['layer'], function(){
             }
         });
     });
-    gotoBtns.attr('title', getMessage('gotoImage'));
 
     // 搜索框事件
     searchInput.on('focus', function () {  // 搜索框获取焦点事件，开启遮罩层
@@ -214,9 +212,11 @@ layui.use(['layer'], function(){
             createTimeBtn.css('display', 'inline-block');
 
             authorBtn.html('<i class="iconfont icon-user">' + ' ' + imageData.user.name + '</i>');
-            authorBtn.attr('title', imageData.user.links.html);
+            authorBtn.attr('title', imageData.user.links.html + unsplashUrl);
             createTimeBtn.html('<i class="iconfont icon-camera">' + ' ' + imageData.created_at.split('T')[0] + '</i>');
         }
+        downloadBtns.attr('title', imageData.links.download_location + unsplashUrl);
+        gotoBtns.attr('title', imageData.links.html + unsplashUrl);
 
         // 图片加载完成时
         img.onload = () =>  {
@@ -225,7 +225,7 @@ layui.use(['layer'], function(){
 
             // 设置动态效果
             setTimeout(function(){
-                img.style.transform = 'scale(1.03)';
+                img.style.transform = 'scale(1.05)';
                 img.style.transition = '5s';
             }, 100 );  // 假如时间设为0（立即执行）会无法执行
             setTimeout(function(){
