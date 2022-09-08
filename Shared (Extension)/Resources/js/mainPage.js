@@ -107,7 +107,7 @@ layui.use(['layer'], function(){
                     if(result.data.solarTerms.indexOf('后') === -1) {
                         solarTerms = '今日' + solarTerms;
                     }
-                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;|&nbsp;' + solarTerms + '</i>')
+                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;｜&nbsp;' + solarTerms + '</i>')
                 }
                 else{}
             },
@@ -123,7 +123,7 @@ layui.use(['layer'], function(){
             success: function (result) {
                 if (result.status === 'success' && result.data.weatherData !==null) {
                     let weatherData = result.data.weatherData;
-                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '&nbsp;|&nbsp;' + weatherData.temperature + '°C</i>');
+                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '&nbsp;｜&nbsp;' + weatherData.temperature + '°C</i>');
                     weatherBtn.css('display', 'inline-block');  // 请求成功再显示
                 }
                 else {}
