@@ -9,6 +9,7 @@ layui.use(['layer'], function(){
     let gotoBtnHeader = $('#gotoBtnHeader');          // 顶部跳转按钮，桌面端时显示
     let mask = $('#mask');                            // 遮罩层
     let searchInput = $('#searchInput');              // 搜索框
+    let layuiFooterRow = $('#layuiFooterRow');
     let authorBtn = $('#authorBtn');                  // 作者按钮，桌面端时显示
     let createTimeBtn = $('#createTimeBtn');          // 创作时间按钮，桌面端时显示
     let downloadBtnFooter = $('#downloadBtnFooter');  // 底部下载按钮，移动端时显示
@@ -107,7 +108,7 @@ layui.use(['layer'], function(){
                     if(result.data.solarTerms.indexOf('后') === -1) {
                         solarTerms = '今日' + solarTerms;
                     }
-                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;｜&nbsp;' + solarTerms + '</i>')
+                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '｜' + solarTerms + '</i>')
                 }
                 else{}
             },
@@ -123,7 +124,7 @@ layui.use(['layer'], function(){
             success: function (result) {
                 if (result.status === 'success' && result.data.weatherData !==null) {
                     let weatherData = result.data.weatherData;
-                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '&nbsp;｜&nbsp;' + weatherData.temperature + '°C</i>');
+                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '｜' + weatherData.temperature + '°C</i>');
                     weatherBtn.css('display', 'inline-block');  // 请求成功再显示
                 }
                 else {}
@@ -200,10 +201,12 @@ layui.use(['layer'], function(){
         }, 500);
         $('body').animate({backgroundColor: imageData.color}, 500);
 
-        // 显示按钮
+        // 屏幕适配
         if(device === 'iPhone' || device === 'Android') {  // 小屏显示底部按钮
             downloadBtnFooter.css('display', 'inline-block');
             gotoBtnFooter.css('display', 'inline-block');
+            layuiFooterRow.removeClass('rowRight');
+            layuiFooterRow.addClass('rowLeft');
         }
         else {
             downloadBtnHeader.css('display', 'inline-block');
