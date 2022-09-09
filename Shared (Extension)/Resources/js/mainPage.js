@@ -18,13 +18,27 @@ layui.use(['layer'], function(){
     let gotoBtns = $('#gotoBtnHeader, #gotoBtnFooter');              // 跳转按钮集合
 
     let device = deviceModel();  // 获取当前设备类型
+    let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
     let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
+
 
     // 下载按钮点击事件
     downloadBtns.on('click', function () {
         chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
             if (unsplashImage) {
-                window.open(unsplashImage.links.download_location + unsplashUrl);
+                $.ajax({
+                    headers: { 'Authorization': "Client-ID " + clientId },
+                    url: unsplashImage.links.download_location,
+                    type: 'GET',
+                    data: { 'client_id': clientId },
+                    success: function (result) {
+                        window.open(result.url + unsplashUrl);
+                    },
+                    error: function (err) {
+                        let errorInfo = getMessage('getImageError');
+                        layer.msg(errorInfo);
+                    }
+                });
             } else {
                 let errorInfo = getMessage('getImageError');
                 layer.msg(errorInfo);
@@ -152,7 +166,6 @@ layui.use(['layer'], function(){
     function setUnsplashImg() {
         chrome.storage.local.remove('unsplashImage');
 
-        let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
         let orientation = 'landscape';
         if(device === 'iPhone' || device === 'Android') {
             orientation = 'portrait';  // 竖屏请求竖屏图片
@@ -201,7 +214,7 @@ layui.use(['layer'], function(){
         }, 500);
         $('body').animate({backgroundColor: imageData.color}, 500);
 
-        // 屏幕适配
+        // 显示按钮
         if(device === 'iPhone' || device === 'Android') {  // 小屏显示底部按钮
             downloadBtnFooter.css('display', 'inline-block');
             gotoBtnFooter.css('display', 'inline-block');
@@ -214,9 +227,9 @@ layui.use(['layer'], function(){
             authorBtn.css('display', 'inline-block');
             createTimeBtn.css('display', 'inline-block');
 
-            authorBtn.html('<i class="iconfont icon-user">' + ' ' + imageData.user.name + '</i>');
+            authorBtn.html('<i class="iconfont icon-camera">' + ' by ' + imageData.user.name +  ' on Unsplash' + '</i>');
             authorBtn.attr('title', imageData.user.links.html + unsplashUrl);
-            createTimeBtn.html('<i class="iconfont icon-camera">' + ' ' + imageData.created_at.split('T')[0] + '</i>');
+            createTimeBtn.html('<i class="iconfont icon-calendar">' + ' ' + imageData.created_at.split('T')[0] + '</i>');
         }
         downloadBtns.attr('title', imageData.links.download_location + unsplashUrl);
         gotoBtns.attr('title', imageData.links.html + unsplashUrl);
