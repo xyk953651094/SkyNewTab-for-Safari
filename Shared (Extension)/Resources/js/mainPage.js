@@ -165,6 +165,13 @@ layui.use(['layer'], function(){
     // 请求unsplash图片
     function setUnsplashImg() {
         chrome.storage.local.remove('unsplashImage');
+        // wallpapers: bo8jQKTaE0Y,
+        // nature: 6sMVjTLSkeQ
+        // arts-culture: bDo48cUhwnY
+        // street-photography: xHxYTMHLgOc
+        // textures-patterns: iUIsnVtjB0Y
+        // Interiors: R_Fyn-Gwtlw
+        // travel: Fzo3zuOHN6w
 
         let orientation = 'landscape';
         if(device === 'iPhone' || device === 'Android') {
@@ -180,6 +187,7 @@ layui.use(['layer'], function(){
                 'client_id': clientId,
                 'orientation': orientation,
                 'content_filter': 'high',
+                'topics': 'bo8jQKTaE0Y,6sMVjTLSkeQ,bDo48cUhwnY,xHxYTMHLgOc,iUIsnVtjB0Y,R_Fyn-Gwtlw,Fzo3zuOHN6w'
             },
             timeout: 10000,
             success: function (result) {
