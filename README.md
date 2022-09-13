@@ -16,6 +16,7 @@
 * 图标来源：https://www.iconfont.cn 以及 https://pixso.cn  
 
 ## 安装
+* 本作品由作者个人出于学习目的开发，由于成本原因，暂不上架Apple App Store。
 * App Store（敬请期待）
 
 ## 效果展示
