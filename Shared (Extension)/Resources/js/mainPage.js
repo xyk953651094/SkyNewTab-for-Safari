@@ -20,42 +20,41 @@ layui.use(['layer'], function(){
     let device = deviceModel();  // 获取当前设备类型
     let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
     let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
+    let unsplashImage = null;  // 默认
 
 
     // 下载按钮点击事件
     downloadBtns.on('click', function () {
-        chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
-            if (unsplashImage) {
-                $.ajax({
-                    headers: { 'Authorization': "Client-ID " + clientId },
-                    url: unsplashImage.links.download_location,
-                    type: 'GET',
-                    data: { 'client_id': clientId },
-                    success: function (result) {
-                        window.open(result.url + unsplashUrl);
-                    },
-                    error: function (err) {
-                        let errorInfo = getMessage('getImageError');
-                        layer.msg(errorInfo);
-                    }
-                });
-            } else {
-                let errorInfo = getMessage('getImageError');
-                layer.msg(errorInfo);
-            }
-        });
+        if (unsplashImage !== null) {
+            $.ajax({
+                headers: {'Authorization': "Client-ID " + clientId},
+                url: unsplashImage.links.download_location,
+                type: 'GET',
+                data: {'client_id': clientId},
+                success: function (result) {
+                    window.open(result.url + unsplashUrl);
+                },
+                error: function (err) {
+                    let errorInfo = getMessage('getImageError');
+                    layer.msg(errorInfo);
+                }
+            });
+        }
+        else {
+            let errorInfo = getMessage('getImageError');
+            layer.msg(errorInfo);
+        }
     });
 
     // 跳转按钮点击事件
     gotoBtns.on('click', function () {
-        chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
-            if (unsplashImage) {
-                window.open(unsplashImage.links.html + unsplashUrl);
-            } else {
-                let errorInfo = getMessage('getImageError');
-                layer.msg(errorInfo);
-            }
-        });
+        if (unsplashImage !== null) {
+            window.open(unsplashImage.links.html + unsplashUrl);
+        }
+        else {
+            let errorInfo = getMessage('getImageError');
+            layer.msg(errorInfo);
+        }
     });
 
     // 搜索框事件
@@ -92,14 +91,13 @@ layui.use(['layer'], function(){
 
     // 作者按钮点击事件
     authorBtn.on('click', function () {
-        chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
-            if (unsplashImage) {
-                window.open(unsplashImage.user.links.html + unsplashUrl);
-            } else {
-                let errorInfo = getMessage('getImageError');
-                layer.msg(errorInfo);
-            }
-        });
+        if (unsplashImage !== null) {
+            window.open(unsplashImage.user.links.html + unsplashUrl);
+        }
+        else {
+            let errorInfo = getMessage('getImageError');
+            layer.msg(errorInfo);
+        }
     })
 
     // 问候语
@@ -164,15 +162,6 @@ layui.use(['layer'], function(){
 
     // 请求unsplash图片
     function setUnsplashImg() {
-        chrome.storage.local.remove('unsplashImage');
-        // wallpapers: bo8jQKTaE0Y,
-        // nature: 6sMVjTLSkeQ
-        // arts-culture: bDo48cUhwnY
-        // street-photography: xHxYTMHLgOc
-        // textures-patterns: iUIsnVtjB0Y
-        // Interiors: R_Fyn-Gwtlw
-        // travel: Fzo3zuOHN6w
-
         let orientation = 'landscape';
         if(device === 'iPhone' || device === 'Android') {
             orientation = 'portrait';  // 竖屏请求竖屏图片
@@ -191,18 +180,26 @@ layui.use(['layer'], function(){
             },
             timeout: 10000,
             success: function (result) {
-                chrome.storage.local.set({ 'unsplashImage': result });
-                setBackgroundImage(result);
+                unsplashImage = result;  // 更新 unsplashImage 的数据为最新请求图片
+                setBackgroundImage(unsplashImage);
             },
             error: function () {
-                // 使用默认图片
-                chrome.storage.local.set({ 'unsplashImage': defaultImage });
-                setBackgroundImage(defaultImage);
+                if (unsplashImage !== null) {
+                    setBackgroundImage(unsplashImage);  // 使用上次请求的图片
+                }
+                else {
+                    unsplashImage = defaultImage;  // 使用默认图片
+                    setBackgroundImage(unsplashImage);
+                }
             },
             cancel: function () {
-                // 使用默认图片
-                chrome.storage.local.set({ 'unsplashImage': defaultImage });
-                setBackgroundImage(defaultImage);
+                if (unsplashImage !== null) {
+                    setBackgroundImage(unsplashImage);  // 使用上次请求的图片
+                }
+                else {
+                    unsplashImage = defaultImage;  // 使用默认图片
+                    setBackgroundImage(unsplashImage);
+                }
             }
         });
     }
