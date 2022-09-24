@@ -9,6 +9,7 @@ layui.use(['layer'], function(){
     let gotoBtnHeader = $('#gotoBtnHeader');          // 顶部跳转按钮，桌面端时显示
     let mask = $('#mask');                            // 遮罩层
     let searchInput = $('#searchInput');              // 搜索框
+    let layuiFooterRow = $('#layuiFooterRow');
     let authorBtn = $('#authorBtn');                  // 作者按钮，桌面端时显示
     let createTimeBtn = $('#createTimeBtn');          // 创作时间按钮，桌面端时显示
     let downloadBtnFooter = $('#downloadBtnFooter');  // 底部下载按钮，移动端时显示
@@ -17,33 +18,44 @@ layui.use(['layer'], function(){
     let gotoBtns = $('#gotoBtnHeader, #gotoBtnFooter');              // 跳转按钮集合
 
     let device = deviceModel();  // 获取当前设备类型
+    let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
     let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
+    let unsplashImage = null;  // 默认
+
 
     // 下载按钮点击事件
     downloadBtns.on('click', function () {
-        chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
-            if (unsplashImage) {
-                window.open(unsplashImage.links.download + unsplashUrl);
-            } else {
-                let errorInfo = getMessage('getImageError');
-                layer.msg(errorInfo);
-            }
-        });
+        if (unsplashImage !== null) {
+            $.ajax({
+                headers: {'Authorization': "Client-ID " + clientId},
+                url: unsplashImage.links.download_location,
+                type: 'GET',
+                data: {'client_id': clientId},
+                success: function (result) {
+                    window.open(result.url + unsplashUrl);
+                },
+                error: function (err) {
+                    let errorInfo = getMessage('getImageError');
+                    layer.msg(errorInfo);
+                }
+            });
+        }
+        else {
+            let errorInfo = getMessage('getImageError');
+            layer.msg(errorInfo);
+        }
     });
-    downloadBtns.attr('title', getMessage('downloadImage'));
 
     // 跳转按钮点击事件
     gotoBtns.on('click', function () {
-        chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
-            if (unsplashImage) {
-                window.open(unsplashImage.links.html + unsplashUrl);
-            } else {
-                let errorInfo = getMessage('getImageError');
-                layer.msg(errorInfo);
-            }
-        });
+        if (unsplashImage !== null) {
+            window.open(unsplashImage.links.html + unsplashUrl);
+        }
+        else {
+            let errorInfo = getMessage('getImageError');
+            layer.msg(errorInfo);
+        }
     });
-    gotoBtns.attr('title', getMessage('gotoImage'));
 
     // 搜索框事件
     searchInput.on('focus', function () {  // 搜索框获取焦点事件，开启遮罩层
@@ -79,14 +91,13 @@ layui.use(['layer'], function(){
 
     // 作者按钮点击事件
     authorBtn.on('click', function () {
-        chrome.storage.local.get('unsplashImage', ({ unsplashImage }) => {
-            if (unsplashImage) {
-                window.open(unsplashImage.user.links.html + unsplashUrl);
-            } else {
-                let errorInfo = getMessage('getImageError');
-                layer.msg(errorInfo);
-            }
-        });
+        if (unsplashImage !== null) {
+            window.open(unsplashImage.user.links.html + unsplashUrl);
+        }
+        else {
+            let errorInfo = getMessage('getImageError');
+            layer.msg(errorInfo);
+        }
     })
 
     // 问候语
@@ -109,7 +120,7 @@ layui.use(['layer'], function(){
                     if(result.data.solarTerms.indexOf('后') === -1) {
                         solarTerms = '今日' + solarTerms;
                     }
-                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '&nbsp;|&nbsp;' + solarTerms + '</i>')
+                    greetBtn.html('<i class="layui-anim layui-anim-fadein iconfont ' + greetIcon + '"> ' + greetContent + '｜' + solarTerms + '</i>')
                 }
                 else{}
             },
@@ -125,7 +136,7 @@ layui.use(['layer'], function(){
             success: function (result) {
                 if (result.status === 'success' && result.data.weatherData !==null) {
                     let weatherData = result.data.weatherData;
-                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '&nbsp;|&nbsp;' + weatherData.temperature + '°C</i>');
+                    weatherBtn.html('<i class="layui-anim layui-anim-fadein iconfont"> ' + weatherData.weather + '｜' + weatherData.temperature + '°C</i>');
                     weatherBtn.css('display', 'inline-block');  // 请求成功再显示
                 }
                 else {}
@@ -151,9 +162,6 @@ layui.use(['layer'], function(){
 
     // 请求unsplash图片
     function setUnsplashImg() {
-        chrome.storage.local.remove('unsplashImage');
-
-        let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
         let orientation = 'landscape';
         if(device === 'iPhone' || device === 'Android') {
             orientation = 'portrait';  // 竖屏请求竖屏图片
@@ -168,21 +176,30 @@ layui.use(['layer'], function(){
                 'client_id': clientId,
                 'orientation': orientation,
                 'content_filter': 'high',
+                'topics': 'bo8jQKTaE0Y,6sMVjTLSkeQ,bDo48cUhwnY,xHxYTMHLgOc,iUIsnVtjB0Y,R_Fyn-Gwtlw,Fzo3zuOHN6w'
             },
             timeout: 10000,
             success: function (result) {
-                chrome.storage.local.set({ 'unsplashImage': result });
-                setBackgroundImage(result);
+                unsplashImage = result;  // 更新 unsplashImage 的数据为最新请求图片
+                setBackgroundImage(unsplashImage);
             },
             error: function () {
-                // 使用默认图片
-                chrome.storage.local.set({ 'unsplashImage': defaultImage });
-                setBackgroundImage(defaultImage);
+                if (unsplashImage !== null) {
+                    setBackgroundImage(unsplashImage);  // 使用上次请求的图片
+                }
+                else {
+                    unsplashImage = defaultImage;  // 使用默认图片
+                    setBackgroundImage(unsplashImage);
+                }
             },
             cancel: function () {
-                // 使用默认图片
-                chrome.storage.local.set({ 'unsplashImage': defaultImage });
-                setBackgroundImage(defaultImage);
+                if (unsplashImage !== null) {
+                    setBackgroundImage(unsplashImage);  // 使用上次请求的图片
+                }
+                else {
+                    unsplashImage = defaultImage;  // 使用默认图片
+                    setBackgroundImage(unsplashImage);
+                }
             }
         });
     }
@@ -206,6 +223,8 @@ layui.use(['layer'], function(){
         if(device === 'iPhone' || device === 'Android') {  // 小屏显示底部按钮
             downloadBtnFooter.css('display', 'inline-block');
             gotoBtnFooter.css('display', 'inline-block');
+            layuiFooterRow.removeClass('rowRight');
+            layuiFooterRow.addClass('rowLeft');
         }
         else {
             downloadBtnHeader.css('display', 'inline-block');
@@ -213,10 +232,12 @@ layui.use(['layer'], function(){
             authorBtn.css('display', 'inline-block');
             createTimeBtn.css('display', 'inline-block');
 
-            authorBtn.html('<i class="iconfont icon-user">' + ' ' + imageData.user.name + '</i>');
-            authorBtn.attr('title', imageData.user.links.html);
-            createTimeBtn.html('<i class="iconfont icon-camera">' + ' ' + imageData.created_at.split('T')[0] + '</i>');
+            authorBtn.html('<i class="iconfont icon-camera">' + ' by ' + imageData.user.name +  ' on Unsplash' + '</i>');
+            authorBtn.attr('title', imageData.user.links.html + unsplashUrl);
+            createTimeBtn.html('<i class="iconfont icon-calendar">' + ' ' + imageData.created_at.split('T')[0] + '</i>');
         }
+        downloadBtns.attr('title', imageData.links.download_location + unsplashUrl);
+        gotoBtns.attr('title', imageData.links.html + unsplashUrl);
 
         // 图片加载完成时
         img.onload = () =>  {
@@ -225,7 +246,7 @@ layui.use(['layer'], function(){
 
             // 设置动态效果
             setTimeout(function(){
-                img.style.transform = 'scale(1.03)';
+                img.style.transform = 'scale(1.05)';
                 img.style.transition = '5s';
             }, 100 );  // 假如时间设为0（立即执行）会无法执行
             setTimeout(function(){

@@ -170,19 +170,25 @@ function blurHash(imageData, container) {
 
 // PC端鼠标移动效果
 function mouseMoveEffect(element) {
-    window.addEventListener('mousemove',function(e){
-        element.style.transition = '0.5s'
-        if(e.movementX > 0 && e.movementY > 0){
-            element.style.transform = 'scale(1.05) translate(-0.1%, -0.1%)'
-        }
-        else if(e.movementX < 0 && e.movementY > 0){
-            element.style.transform = 'scale(1.05) translate(0.1%, -0.1%)'
-        }
-        else if(e.movementX > 0 && e.movementY < 0){
-            element.style.transform = 'scale(1.05) translate(-0.1%, 0.1%)'
-        }
-        else if(e.movementX < 0 && e.movementY < 0){
-            element.style.transform = 'scale(1.05) translate(0.1%, 0.1%)'
+    window.addEventListener("mousemove",function(e){
+        let mouseX = e.screenX;
+        let mouseY = e.screenY;
+        let screenWidth = document.body.clientWidth;
+        let screenHeight = document.body.clientHeight;
+        let screenMidWidth = screenWidth / 2;
+        let screenMidHeight = screenHeight / 2;
+        let relatedX = mouseX - screenMidWidth;   // 大于0则在屏幕右边，小于0则在屏幕左边
+        let relatedY = mouseY - screenMidHeight;  // 大于0则在屏幕下边，小于0则在屏幕上边
+        let relatedXRatio = relatedX / screenMidWidth;
+        let relatedYRatio = relatedY / screenMidHeight;
+
+        if (element instanceof HTMLElement) {
+            element.style.transition = "0.3s";
+            let rotateX = (relatedXRatio / 3).toFixed(2);      // 调整精度
+            let rotateY = (-relatedYRatio / 3).toFixed(2);     // 调整精度
+            let translateX = (-relatedXRatio / 3).toFixed(2);  // 调整精度
+            let translateY = (-relatedYRatio / 3).toFixed(2);  // 调整精度
+            element.style.transform = "scale(1.05, 1.05) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) translate(" + translateX + "%, " + translateY + "%)";
         }
     });
 }
