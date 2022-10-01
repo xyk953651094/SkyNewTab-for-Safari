@@ -17,7 +17,7 @@ layui.use(['layer'], function(){
     let downloadBtns = $('#downloadBtnHeader, #downloadBtnFooter');  // 下载按钮集合
     let gotoBtns = $('#gotoBtnHeader, #gotoBtnFooter');              // 跳转按钮集合
 
-    let device = deviceModel();  // 获取当前设备类型
+    let device = getDevice();  // 获取当前设备类型
     let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
     let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
     let unsplashImage = null;  // 默认
@@ -250,7 +250,7 @@ layui.use(['layer'], function(){
                 img.style.transition = '5s';
             }, 100 );  // 假如时间设为0（立即执行）会无法执行
             setTimeout(function(){
-                mouseMoveEffect(img);
+                imageDynamicEffect(img);
             }, 5000);
         }
     }
