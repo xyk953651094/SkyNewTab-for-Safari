@@ -169,7 +169,7 @@ function blurHash(imageData, container) {
 }
 
 // 壁纸动态效果
-function imageDynamicEffect(element) {
+async function imageDynamicEffect(element) {
     let device = getDevice();
     if (device === "Android") {
         if (window.addEventListener) {
@@ -177,25 +177,36 @@ function imageDynamicEffect(element) {
                 console.log(event.alpha, event.beta, event.gamma);
             });
         }
-    }
-    else if (device === "iPhone" || device === "iPad") {
+    } else if (device === "iPhone" || device === "iPad") {
         if (window.DeviceOrientationEvent) {
-            DeviceOrientationEvent.requestPermission().then(function(status) {
-                if (status === "granted" && window.addEventListener) {
-                    window.addEventListener("deviceorientation", function(event) {
+            const requestPermission = DeviceOrientationEvent.requestPermission();
+            const iOS = typeof requestPermission === "function";
+            if (iOS) {
+                const response = await requestPermission();
+                if (response === 'granted') {
+                    window.addEventListener("deviceorientation", function (event) {
                         console.log(event.alpha, event.beta, event.gamma);
                     });
                 }
                 else {
                     alert("已拒绝权限");
                 }
-            }).catch(function(err){
-                alert("Error: " + err);
-            })
+            }
+            
+            // DeviceOrientationEvent.requestPermission().then(function (status) {
+            //     if (status === "granted" && window.addEventListener) {
+            //         window.addEventListener("deviceorientation", function (event) {
+            //             console.log(event.alpha, event.beta, event.gamma);
+            //         });
+            //     } else {
+            //         alert("已拒绝权限");
+            //     }
+            // }).catch(function (err) {
+            //     alert("Error: " + err);
+            // })
         }
-    }
-    else {  // 桌面端
-        window.addEventListener("mousemove",function(e){
+    } else {  // 桌面端
+        window.addEventListener("mousemove", function (e) {
             let mouseX = e.screenX;
             let mouseY = e.screenY;
             let screenWidth = document.body.clientWidth;
