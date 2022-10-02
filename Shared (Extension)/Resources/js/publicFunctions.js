@@ -168,7 +168,7 @@ function blurHash(imageData, container) {
     // });
 }
 
-// PC端鼠标移动效果
+// 壁纸动态效果
 function imageDynamicEffect(element) {
     let device = getDevice();
     if (device === "Android") {
