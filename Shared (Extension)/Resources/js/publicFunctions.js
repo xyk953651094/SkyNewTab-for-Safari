@@ -1,10 +1,11 @@
-// 根据图片背景颜色获取元素反色效果
 import {device} from "./publicConstants.js";
+let layer = layui.layer;
 
+// 根据图片背景颜色获取元素反色效果
 export function getThemeColor(color) {
-    color = '0x' + color.replace('#', '');
-    let newColor = '000000' + (0xFFFFFF - color).toString(16);
-    return '#' + newColor.substring(newColor.length-6, newColor.length);
+    color = "0x" + color.replace("#", "");
+    let newColor = "000000" + (0xFFFFFF - color).toString(16);
+    return "#" + newColor.substring(newColor.length - 6, newColor.length);
 }
 
 // 根据图片背景颜色改变字体颜色效果
@@ -15,19 +16,24 @@ export function getFontColor(color) {
     let b = parseInt(rgb[3], 16);
     let gray = Math.round(r * 0.299 + g * 0.587 + b * 0.114);
     if (gray > 128) {
-        return '#000000';
+        return "#000000";
     } else {
-        return '#ffffff';
+        return "#ffffff";
     }
 }
 
 // 判断设备型号
 export function getDevice() {
     let ua = navigator.userAgent;
-    if(ua.indexOf('iPhone') > -1) { return 'iPhone' }
-    else if(ua.indexOf('iPad') > -1) { return 'iPad' }
-    else if(ua.indexOf('Android') > -1) { return 'Android' }
-    else { return '' }
+    if (ua.indexOf("iPhone") > -1) {
+        return "iPhone"
+    } else if (ua.indexOf("iPad") > -1) {
+        return "iPad"
+    } else if (ua.indexOf("Android") > -1) {
+        return "Android"
+    } else {
+        return ""
+    }
 }
 
 // 获取日期时间
@@ -40,8 +46,12 @@ export function getDateTime() {
     let minute = date.getMinutes();
     let second = date.getSeconds();
 
-    if (month < 10) { month = '0' + month }
-    if (day < 10) { day = '0' + day }
+    if (month < 10) {
+        month = "0" + month
+    }
+    if (day < 10) {
+        day = "0" + day
+    }
     return year.toString() + month.toString() + day.toString();
 }
 
@@ -51,49 +61,51 @@ export function getGreet() {
     let hour = now.getHours();
     let greetContent, greetIcon;
     if (hour >= 6 && hour < 11) {
-        greetContent = getMessage('greetMorning');
-        greetIcon = 'icon-sunrise';
+        greetContent = getMessage("greetMorning");
+        greetIcon = "icon-sunrise";
     } else if (hour >= 11 && hour < 14) {
-        greetContent = getMessage('greetNoon');
-        greetIcon = 'icon-sun_max';
+        greetContent = getMessage("greetNoon");
+        greetIcon = "icon-sun_max";
     } else if (hour >= 14 && hour < 17) {
-        greetContent = getMessage('greetAfternoon');
-        greetIcon = 'icon-sunset';
+        greetContent = getMessage("greetAfternoon");
+        greetIcon = "icon-sunset";
     } else if (hour >= 17 && hour < 20) {
-        greetContent = getMessage('greetEvening');
-        greetIcon = 'icon-sunset';
+        greetContent = getMessage("greetEvening");
+        greetIcon = "icon-sunset";
     } else if (hour >= 20 && hour < 24) {
-        greetContent = getMessage('greetNight');
-        greetIcon = 'icon-moon_stars';
+        greetContent = getMessage("greetNight");
+        greetIcon = "icon-moon_stars";
     } else {
-        greetContent = getMessage('greetDawn');
-        greetIcon = 'icon-moon_stars';
+        greetContent = getMessage("greetDawn");
+        greetIcon = "icon-moon_stars";
     }
     return {greetContent, greetIcon};
 }
 
 // 节气
-export function getSolarTerms(year,month,day){
+export function getSolarTerms(year, month, day) {
     // month = month-1;
-    let sTermInfo = [0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758];
-    let solarTerm = ["小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至"];
+    let sTermInfo = [0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758];
+    let solarTerm = ["小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至"];
     let solarTerms = "";
 
     //　此方法可以获取该日期处于某节气
-    while (solarTerms===""){
-        let tmp1 = new Date((31556925974.7*(year-1900)+sTermInfo[month*2+1]*60000)+Date.UTC(1900,0,6,2,5));
+    while (solarTerms === "") {
+        let tmp1 = new Date((31556925974.7 * (year - 1900) + sTermInfo[month * 2 + 1] * 60000) + Date.UTC(1900, 0, 6, 2, 5));
         let tmp2 = tmp1.getUTCDate();
-        if (tmp2===day) solarTerms = solarTerm[month*2+1];
-        tmp1 = new Date((31556925974.7*(year-1900)+sTermInfo[month*2]*60000)+Date.UTC(1900,0,6,2,5));
-        tmp2= tmp1.getUTCDate(); if (tmp2===day) solarTerms = solarTerm[month*2];
-        if(day>1){
-            day=day-1;
-        }else {
-            month=month-1;
-            if(month<0){
-                year=year-1; month=11;
+        if (tmp2 === day) solarTerms = solarTerm[month * 2 + 1];
+        tmp1 = new Date((31556925974.7 * (year - 1900) + sTermInfo[month * 2] * 60000) + Date.UTC(1900, 0, 6, 2, 5));
+        tmp2 = tmp1.getUTCDate();
+        if (tmp2 === day) solarTerms = solarTerm[month * 2];
+        if (day > 1) {
+            day = day - 1;
+        } else {
+            month = month - 1;
+            if (month < 0) {
+                year = year - 1;
+                month = 11;
             }
-            day=31;
+            day = 31;
         }
     }
     return solarTerms;
@@ -144,7 +156,7 @@ export function blurHash(imageData, container) {
                 width,
                 height
             );
-            canvas.className = 'backgroundCanvas layui-anim layui-anim-fadein';
+            canvas.className = "backgroundCanvas layui-anim layui-anim-fadein";
             container.append(canvas);
 
             // as image object with onload callback
@@ -172,11 +184,7 @@ export function blurHash(imageData, container) {
 // Android端与桌面端壁纸动态效果
 export function imageDynamicEffect(element) {
     if (device === "Android") {
-        if (window.addEventListener) {
-            window.addEventListener("deviceorientation", function (event) {
-                console.log(event.alpha, event.beta, event.gamma);
-            });
-        }
+        deviceorientationEvent();
     } else {  // 桌面端
         window.addEventListener("mousemove", function (e) {
             let mouseX = e.screenX;
@@ -207,31 +215,50 @@ export function imageDynamicEffect(element) {
 }
 
 // iOS端壁纸动态效果
-export function iOSImageDynamicEffect (element) {
+export function iOSImageDynamicEffect(element) {
     DeviceOrientationEvent.requestPermission().then(function (status) {
-        alert("3");
-        if (status === "granted" && window.addEventListener) {
-            window.addEventListener("deviceorientation", function (event) {
-                // console.log(event.alpha, event.beta, event.gamma);
-                let rotateX = (event.beta / 10).toFixed(2);       // 调整精度
-                let rotateY = (-event.gamma / 10).toFixed(2);     // 调整精度
-                let translateX = (-event.gamma / 10).toFixed(2);  // 调整精度
-                let translateY = (event.beta / 10).toFixed(2);    // 调整精度
-
-                element.style.transition = "0.3s";
-                element.style.transform = "scale(1.05, 1.05) " +
-                    // "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
-                    "translate(" + translateX + "%, " + translateY + "%)";
-            });
+        if (status === "granted") {
+            deviceorientationEvent();
         } else {
-            alert("已拒绝权限");
+            layer.confirm("授予访问权限以提升视觉效果", {icon: 3, title:'提示'}, {btn: ["确认","取消"]},
+                function(index){
+                    DeviceOrientationEvent.requestPermission().then(function (status) {
+                        if (status === "granted") {
+                            deviceorientationEvent();
+                        } else {
+                            layer.msg("已拒绝权限");
+                        }
+                    }).catch(function (err) {
+                        layer.msg("错误： " + err);
+                    });
+                    layer.close(index);
+                },
+                function(index){
+                    layer.close(index);
+                });
         }
     }).catch(function (err) {
-        alert("Error: " + err);
+        layer.msg("错误： " + err);
     })
+}
+
+function deviceorientationEvent() {
+    window.addEventListener("deviceorientation", function (event) {
+        // console.log(event.alpha, event.beta, event.gamma);
+        let rotateX = (event.beta / 10).toFixed(2);       // 调整精度
+        let rotateY = (-event.gamma / 10).toFixed(2);     // 调整精度
+        let translateX = (-event.gamma / 10).toFixed(2);  // 调整精度
+        let translateY = (event.beta / 10).toFixed(2);    // 调整精度
+
+        element.style.transition = "0.3s";
+        element.style.transform = "scale(1.05, 1.05) " +
+            // "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
+            "translate(" + translateX + "%, " + translateY + "%)";
+    });
 }
 
 // 国际化
 export function getMessage(messageName) {
     return chrome.i18n.getMessage(messageName);
 }
+

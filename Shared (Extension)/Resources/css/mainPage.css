@@ -43,13 +43,14 @@ html, body {
 #layuiHeader {
     height: 100px;
     line-height: 100px;
-    background-color: transparent;  /*覆盖layui样式*/
+    background-color: transparent;
 }
 
+/*覆盖layui样式*/
 #layuiBody {
     top: 100px;
-    left: 0  !important;            /*覆盖layui样式*/
-    padding-bottom : 100px;         /*覆盖layui样式*/
+    left: 0  !important;
+    padding-bottom : 100px;
 }
 
 /* 按钮指针样式 */
@@ -103,11 +104,10 @@ html, body {
     align-items: center;
 }
 
-/*毛玻璃效果*/
-.frostedGlass {
+/*元素主题效果*/
+.componentTheme {
     border-width: 0;
     box-shadow: 0 0 0 1px rgb(0 0 0 / 10%), 0 2px 4px 1px rgb(0 0 0 / 18%);
-    background-color: #00BCD4;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter:blur(10px);
     overflow:hidden;

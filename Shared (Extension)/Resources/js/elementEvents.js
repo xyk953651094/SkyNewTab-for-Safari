@@ -52,9 +52,7 @@ layui.use(["layer"], function(){
     searchInput.on("focus", function () {  // 搜索框获取焦点事件，开启遮罩层
         mask.removeClass("layui-anim layui-anim-fadeout");
         mask.addClass("layui-anim layui-anim-fadein");
-        mask.css({
-            "display": "block",
-        });
+        mask.css({"display": "block"});
     }).on("blur", function () {  // 搜索框失去焦点事件，关闭遮罩层
         mask.removeClass("layui-anim layui-anim-fadein");
         mask.addClass("layui-anim layui-anim-fadeout");
