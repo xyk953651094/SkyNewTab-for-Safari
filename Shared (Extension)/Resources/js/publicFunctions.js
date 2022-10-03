@@ -1,12 +1,14 @@
 // 根据图片背景颜色获取元素反色效果
-function getThemeColor(color) {
+import {device} from "./publicConstants.js";
+
+export function getThemeColor(color) {
     color = '0x' + color.replace('#', '');
     let newColor = '000000' + (0xFFFFFF - color).toString(16);
     return '#' + newColor.substring(newColor.length-6, newColor.length);
 }
 
 // 根据图片背景颜色改变字体颜色效果
-function getFontColor(color) {
+export function getFontColor(color) {
     let rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
     let r = parseInt(rgb[1], 16);
     let g = parseInt(rgb[2], 16);
@@ -20,7 +22,7 @@ function getFontColor(color) {
 }
 
 // 判断设备型号
-function getDevice() {
+export function getDevice() {
     let ua = navigator.userAgent;
     if(ua.indexOf('iPhone') > -1) { return 'iPhone' }
     else if(ua.indexOf('iPad') > -1) { return 'iPad' }
@@ -29,7 +31,7 @@ function getDevice() {
 }
 
 // 获取日期时间
-function getDateTime() {
+export function getDateTime() {
     let date = new Date();
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
@@ -44,7 +46,7 @@ function getDateTime() {
 }
 
 // 获取问候
-function getGreet() {
+export function getGreet() {
     let now = new Date();
     let hour = now.getHours();
     let greetContent, greetIcon;
@@ -70,8 +72,8 @@ function getGreet() {
     return {greetContent, greetIcon};
 }
 
-// 24节气
-function getSolarterms(year,month,day){
+// 节气
+export function getSolarTerms(year,month,day){
     // month = month-1;
     let sTermInfo = [0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758];
     let solarTerm = ["小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至"];
@@ -100,7 +102,6 @@ function getSolarterms(year,month,day){
 // 获取节日
 // function getHolidays(year,month,day){
 //     month = month + 1;
-//     let lunarInfo = calendarFormatter.solar2lunar(year,month,day);
 //
 //     // 农历节日
 //     if(lunarInfo.lMonth === 1 && lunarInfo.lday === 1)  { return "春节"}
@@ -129,7 +130,7 @@ function getSolarterms(year,month,day){
 // }
 
 // BlurHash
-function blurHash(imageData, container) {
+export function blurHash(imageData, container) {
     let hash = imageData.blur_hash;
     let width = parseInt(imageData.width);
     let height = parseInt(imageData.height);
@@ -168,42 +169,13 @@ function blurHash(imageData, container) {
     // });
 }
 
-// 壁纸动态效果
-async function imageDynamicEffect(element) {
-    let device = getDevice();
+// Android端与桌面端壁纸动态效果
+export function imageDynamicEffect(element) {
     if (device === "Android") {
         if (window.addEventListener) {
             window.addEventListener("deviceorientation", function (event) {
                 console.log(event.alpha, event.beta, event.gamma);
             });
-        }
-    } else if (device === "iPhone" || device === "iPad") {
-        if (window.DeviceOrientationEvent) {
-            const requestPermission = DeviceOrientationEvent.requestPermission();
-            const iOS = typeof requestPermission === "function";
-            if (iOS) {
-                const response = await requestPermission();
-                if (response === 'granted') {
-                    window.addEventListener("deviceorientation", function (event) {
-                        console.log(event.alpha, event.beta, event.gamma);
-                    });
-                }
-                else {
-                    alert("已拒绝权限");
-                }
-            }
-            
-            // DeviceOrientationEvent.requestPermission().then(function (status) {
-            //     if (status === "granted" && window.addEventListener) {
-            //         window.addEventListener("deviceorientation", function (event) {
-            //             console.log(event.alpha, event.beta, event.gamma);
-            //         });
-            //     } else {
-            //         alert("已拒绝权限");
-            //     }
-            // }).catch(function (err) {
-            //     alert("Error: " + err);
-            // })
         }
     } else {  // 桌面端
         window.addEventListener("mousemove", function (e) {
@@ -221,20 +193,45 @@ async function imageDynamicEffect(element) {
             if (element instanceof HTMLElement) {
                 element.style.transition = "0.3s";
                 let skewX = (relatedXRatio / 10).toFixed(2);       // 调整精度
-                let rotateX = (relatedXRatio / 2).toFixed(2);      // 调整精度
-                let rotateY = (-relatedYRatio / 2).toFixed(2);     // 调整精度
+                let rotateX = (-relatedYRatio / 2).toFixed(2);     // 调整精度
+                let rotateY = (relatedXRatio / 2).toFixed(2);      // 调整精度
                 let translateX = (-relatedXRatio / 2).toFixed(2);  // 调整精度
                 let translateY = (-relatedYRatio / 2).toFixed(2);  // 调整精度
                 element.style.transform = "scale(1.05, 1.05) " +
                     "skew(" + skewX + "deg)" +
-                    "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
+                    "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) " +
                     "translate(" + translateX + "%, " + translateY + "%)";
             }
         });
     }
 }
 
+// iOS端壁纸动态效果
+export function iOSImageDynamicEffect (element) {
+    DeviceOrientationEvent.requestPermission().then(function (status) {
+        alert("3");
+        if (status === "granted" && window.addEventListener) {
+            window.addEventListener("deviceorientation", function (event) {
+                // console.log(event.alpha, event.beta, event.gamma);
+                let rotateX = (event.beta / 10).toFixed(2);       // 调整精度
+                let rotateY = (-event.gamma / 10).toFixed(2);     // 调整精度
+                let translateX = (-event.gamma / 10).toFixed(2);  // 调整精度
+                let translateY = (event.beta / 10).toFixed(2);    // 调整精度
+
+                element.style.transition = "0.3s";
+                element.style.transform = "scale(1.05, 1.05) " +
+                    // "rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) " +
+                    "translate(" + translateX + "%, " + translateY + "%)";
+            });
+        } else {
+            alert("已拒绝权限");
+        }
+    }).catch(function (err) {
+        alert("Error: " + err);
+    })
+}
+
 // 国际化
-function getMessage(messageName) {
+export function getMessage(messageName) {
     return chrome.i18n.getMessage(messageName);
 }

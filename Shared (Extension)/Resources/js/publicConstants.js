@@ -1,5 +1,31 @@
+import {getDevice} from "./publicFunctions.js";
+let $ = layui.jquery;
+
+// HTML 元素
+export let layoutAdmin = $('#layoutAdmin');              //
+export let greetBtn = $('#greetBtn');                    // 问候按钮
+export let weatherBtn = $('#weatherBtn')                 // 天气按钮
+export let downloadBtnHeader = $('#downloadBtnHeader');  // 顶部下载按钮，桌面端时显示
+export let gotoBtnHeader = $('#gotoBtnHeader');          // 顶部跳转按钮，桌面端时显示
+export let mask = $('#mask');                            // 遮罩层
+export let searchInput = $('#searchInput');              // 搜索框
+export let layuiFooterRow = $('#layuiFooterRow');
+export let authorBtn = $('#authorBtn');                  // 作者按钮，桌面端时显示
+export let createTimeBtn = $('#createTimeBtn');          // 创作时间按钮，桌面端时显示
+export let downloadBtnFooter = $('#downloadBtnFooter');  // 底部下载按钮，移动端时显示
+export let gotoBtnFooter = $('#gotoBtnFooter');          // 底部跳转按钮，移动端时显示
+export let downloadBtns = $('#downloadBtnHeader, #downloadBtnFooter');  // 下载按钮集合
+export let gotoBtns = $('#gotoBtnHeader, #gotoBtnFooter');              // 跳转按钮集合
+
+// 常用变量
+export let device = getDevice();  // 获取当前设备类型
+export let clientId = 'ntHZZmwZUkhiLBMvwqqzmOG29nyXSCXlX7x_i-qhVHM';
+export let unsplashUrl = "?utm_source=SkyNewTab&utm_medium=referral";   // Unsplash API规范
+export let unsplashImage = null;  // 默认
+export function modifyUnsplashImage( value ) { unsplashImage = value; };
+
 // 主题颜色
-let lightThemeArray = [
+export let lightThemeArray = [
     // Material Design配色
     {'bodyBackgroundColor': '#FFEBEE', 'frostedGlassBackgroundColor': '#F44336'},
     {'bodyBackgroundColor': '#F44336', 'frostedGlassBackgroundColor': '#FFEBEE'},
@@ -88,7 +114,7 @@ let lightThemeArray = [
     {'bodyBackgroundColor': '#FFE7B6', 'frostedGlassBackgroundColor': '#50543B'},
 ];
 
-let darkThemeArray = [
+export let darkThemeArray = [
     // Material Design配色
     {'bodyBackgroundColor': '#9C27B0', 'frostedGlassBackgroundColor': '#F3E5F5'},
     {'bodyBackgroundColor': '#673AB7', 'frostedGlassBackgroundColor': '#EDE7F6'},
@@ -137,7 +163,7 @@ let darkThemeArray = [
 ];
 
 // 默认图片
-let defaultImage = {
+export let defaultImage = {
     "id": "a8YKQkLOUH8",
     "created_at": "2022-08-08T19:27:42Z",
     "updated_at": "2022-08-28T10:33:48Z",
