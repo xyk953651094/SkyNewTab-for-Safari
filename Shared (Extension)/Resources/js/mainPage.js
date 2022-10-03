@@ -102,7 +102,7 @@ function setUnsplashImg() {
             "client_id": clientId,
             "orientation": orientation,
             "content_filter": "high",
-            "topics": "bo8jQKTaE0Y,6sMVjTLSkeQ,bDo48cUhwnY,xHxYTMHLgOc,iUIsnVtjB0Y,R_Fyn-Gwtlw,Fzo3zuOHN6w"
+            "topics": "bo8jQKTaE0Y"
         },
         timeout: 5000,
         success: function (result) {
@@ -126,7 +126,7 @@ function setBackgroundImage(imageData){
     // 图片加载完成前显示BlurHash效果
     // blurHash(imageData, layoutAdmin);
 
-    // 动画过渡主题颜色
+    // TODO：动画过渡主题颜色
     // $("body").animate({backgroundColor: imageData.color}, 500);
     // $(".componentTheme").animate({
     //     color: getFontColor(getThemeColor(imageData.color)),

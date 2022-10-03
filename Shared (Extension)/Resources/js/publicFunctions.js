@@ -184,7 +184,7 @@ export function blurHash(imageData, container) {
 // Android端与桌面端壁纸动态效果
 export function imageDynamicEffect(element) {
     if (device === "Android") {
-        deviceorientationEvent();
+        deviceOrientationEvent();
     } else {  // 桌面端
         window.addEventListener("mousemove", function (e) {
             let mouseX = e.screenX;
@@ -216,33 +216,37 @@ export function imageDynamicEffect(element) {
 
 // iOS端壁纸动态效果
 export function iOSImageDynamicEffect(element) {
-    DeviceOrientationEvent.requestPermission().then(function (status) {
-        if (status === "granted") {
-            deviceorientationEvent();
-        } else {
-            layer.confirm("授予访问权限以提升视觉效果", {icon: 3, title:'提示'}, {btn: ["确认","取消"]},
-                function(index){
-                    DeviceOrientationEvent.requestPermission().then(function (status) {
-                        if (status === "granted") {
-                            deviceorientationEvent();
-                        } else {
-                            layer.msg("已拒绝权限");
-                        }
-                    }).catch(function (err) {
-                        layer.msg("错误： " + err);
-                    });
-                    layer.close(index);
-                },
-                function(index){
-                    layer.close(index);
+    let deviceOrientationPermission = localStorage.getItem('deviceOrientationPermission');
+    if (deviceOrientationPermission === "granted") {
+        DeviceOrientationEvent.requestPermission().then(function (status) {
+            if (status === "granted") {
+                deviceOrientationEvent(element);
+            }
+        }).catch(function (err) {
+            layer.msg("错误： " + err);
+        });
+    }
+    else {
+        layer.confirm("授予访问权限以提升视觉效果", {btn: ["确认","取消"]},
+            function(index){
+                DeviceOrientationEvent.requestPermission().then(function (status) {
+                    if (status === "granted") {
+                        deviceOrientationEvent(element);
+                        localStorage.setItem("deviceOrientationPermission", "granted");
+                    }
+                }).catch(function (err) {
+                    layer.msg("错误： " + err);
                 });
-        }
-    }).catch(function (err) {
-        layer.msg("错误： " + err);
-    })
+                layer.close(index);
+            },
+            function(index){
+                layer.close(index);
+            });
+    }
 }
 
-function deviceorientationEvent() {
+// 移动端陀螺仪
+function deviceOrientationEvent(element) {
     window.addEventListener("deviceorientation", function (event) {
         // console.log(event.alpha, event.beta, event.gamma);
         let rotateX = (event.beta / 10).toFixed(2);       // 调整精度
